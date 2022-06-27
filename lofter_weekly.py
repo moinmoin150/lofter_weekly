@@ -31,7 +31,7 @@ def display(data):
 def visualize(total_df_melt, dt):
     if dt == "全部":
         fig = px.line(total_df_melt,
-            x="日期",
+            x="记录日期",
             y="value",
             color="URL",
             markers=True,
@@ -40,7 +40,7 @@ def visualize(total_df_melt, dt):
             custom_data=['Username', 'Date', 'Headline', 'index'])
     else:
         fig = px.line(total_df_melt[total_df_melt.Date==dt],
-            x="日期",
+            x="记录日期",
             y="value",
             color="URL",
             markers=True,
@@ -71,8 +71,8 @@ if page == 'GGAD':
     total_df_melt = total_df.iloc[:,:-7].melt(id_vars=['URL','Headline', 'Type', 'Username', 'User URL','Date','index'],var_name=['记录日期']).sort_values('Headline')
     total_df_melt['记录日期'] = pd.to_datetime(total_df_melt['记录日期'])
 #     comment_df_melt['记录日期'] = pd.to_datetime(comment_df_melt['记录日期'])
-    total_df_melt.sort_values(['value','日期'], ascending=False, inplace=True)
-# comment_df_melt.sort_values(['value','日期'], ascending=False, inplace=True)
+    total_df_melt.sort_values(['value','记录日期'], ascending=False, inplace=True)
+# comment_df_melt.sort_values(['value','记录日期'], ascending=False, inplace=True)
     clist = ["全部"]+list(total_df['Date'].unique())
     dt = st.selectbox('选择发表日期', clist)
     if dt == "全部":
