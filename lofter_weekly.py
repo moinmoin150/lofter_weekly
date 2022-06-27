@@ -77,14 +77,25 @@ if page == 'GGAD':
     total_df_melt.sort_values(['value','记录日期'], ascending=False, inplace=True)
     clist = ["全部"]+list(total_df['Date'].unique())
     dt = st.selectbox('选择发表日期', clist)
-    if dt == "全部":
-        display(total_df)
-    else:
-        display(total_df[total_df.Date==dt])
     status = st.radio ("筛选", ("全部","仅文字","仅图片"))
     if status == '全部':
+        if dt == "全部":
+            display(total_df)
+        else:
+            display(total_df[total_df.Date==dt])
+    elif status == '仅文字':
+        if dt == "全部":
+            display(total_df[total_df.Type=='text'])
+        else:
+            display(total_df[(total_df.Date==dt)&(total_df.Type=='text')])
+    else:
+        if dt == "全部":
+            display(total_df[total_df.Type=='img'])
+        else:
+            display(total_df[(total_df.Date==dt)&(total_df.Type=='img')])
+    if status == '全部':
         visualize(total_df_melt, dt)
-    if status == '仅文字':
+    elif status == '仅文字':
         visualize(total_df_melt[total_df_melt.Type=='text'], dt)
     else:
         visualize(total_df_melt[total_df_melt.Type=='img'], dt)
@@ -97,13 +108,24 @@ if page == 'GGAD':
     comment_df_melt = comment_df.iloc[:,:-7].melt(id_vars=['index','URL','Headline', 'Type', 'Username', 'User URL','Date'],var_name=['记录日期']).sort_values('Headline')
     comment_df_melt['记录日期'] = pd.to_datetime(comment_df_melt['记录日期'])
     comment_df_melt.sort_values(['value','记录日期'], ascending=False, inplace=True)
-    if dt == "全部":
-        display(comment_df)
+    if status == '全部':
+        if dt == "全部":
+            display(comment_df)
+        else:
+            display(comment_df[comment_df.Date==dt])
+    elif status == '仅文字':
+        if dt == "全部":
+            display(comment_df[comment_df.Type=='text'])
+        else:
+            display(comment_df[(comment_df.Date==dt)&(comment_df.Type=='text')])
     else:
-        display(comment_df[comment_df.Date==dt])
+        if dt == "全部":
+            display(comment_df[comment_df.Type=='img'])
+        else:
+            display(comment_df[(comment_df.Date==dt)&(comment_df.Type=='img')])
     if status == '全部':
         visualize(comment_df_melt, dt)
-    if status == '仅文字':
+    elif status == '仅文字':
         visualize(comment_df_melt[comment_df_melt.Type=='text'], dt)
     else:
         visualize(comment_df_melt[comment_df_melt.Type=='img'], dt)
