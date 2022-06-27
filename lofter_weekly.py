@@ -28,15 +28,7 @@ def display(data):
     )
 
 
-ggad= pd.read_csv('total_df_ggad.csv', index_col=0)
-# ggad= pd.read_csv('total_df_ggad.csv', index_col=0)
-st.header("一周热度增长（6月20日至6月26日）")
-page = st.sidebar.selectbox('选择CP',
-  ['GGAD','ADGG'])
-if page == 'GGAD':
-    clist = ggad['Date'].unique()+["全部"]
-    dt = st.sidebar.selectbox('选择发表日期', clist)
-    display(ggad)
+def visualize(total_df_melt, dt):
     if dt == "全部":
         fig = px.line(total_df_melt,
             x="日期",
@@ -70,5 +62,16 @@ if page == 'GGAD':
         ])
     )
 
+
+st.header("一周热度增长（6月20日至6月26日）")
+page = st.sidebar.selectbox('选择CP',['GGAD','ADGG'])
+if page == 'GGAD':
+    total_df= pd.read_csv('total_df_ggad.csv', index_col=0)
+    total_df_melt = total_df.melt(id_vars=['URL','Headline', 'Type', 'Username', 'User URL','Date','index'],var_name=['日期']).sort_values('Headline')
+    clist = list(ggad['Date'].unique())+["全部"]
+    dt = st.sidebar.selectbox('选择发表日期', clist)
+    display(ggad)
+    visualize(total_df_melt, dt)
 else:
     pass
+
