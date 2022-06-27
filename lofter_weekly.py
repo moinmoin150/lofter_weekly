@@ -81,7 +81,13 @@ if page == 'GGAD':
         display(total_df)
     else:
         display(total_df[total_df.Date==dt])
-    visualize(total_df_melt, dt)
+    status = st.radio ("筛选", ("全部","仅文字","仅图片"))
+    if status == '全部':
+        visualize(total_df_melt, dt)
+    if status == '仅文字':
+        visualize(total_df_melt[total_df_melt.Type=='text'], dt)
+    else:
+        visualize(total_df_melt[total_df_melt.Type=='img'], dt)
     
     comment_df = pd.read_csv('comment_df_ggad.csv', index_col=0)
     comment_df = comment_df[['index', 'Headline', 'Type', 'Username', 'URL', 'User URL', 'Date', '2022-06-20',
@@ -95,7 +101,12 @@ if page == 'GGAD':
         display(comment_df)
     else:
         display(comment_df[comment_df.Date==dt])
-    visualize(comment_df_melt, dt)
+    if status == '全部':
+        visualize(comment_df_melt, dt)
+    if status == '仅文字':
+        visualize(comment_df_melt[comment_df_melt.Type=='text'], dt)
+    else:
+        visualize(comment_df_melt[comment_df_melt.Type=='img'], dt)
 else:
     pass
 
