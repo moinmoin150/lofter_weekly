@@ -68,9 +68,9 @@ page = st.sidebar.selectbox('选择CP',['GGAD','ADGG'])
 if page == 'GGAD':
     total_df= pd.read_csv('total_df_ggad.csv', index_col=0)
     total_df_melt = total_df.melt(id_vars=['URL','Headline', 'Type', 'Username', 'User URL','Date','index'],var_name=['日期']).sort_values('Headline')
-    clist = list(ggad['Date'].unique())+["全部"]
-    dt = st.sidebar.selectbox('选择发表日期', clist)
-    display(ggad)
+    clist = list(total_df['Date'].unique())+["全部"]
+    dt = st.selectbox('选择发表日期', clist)
+    display(total_df)
     visualize(total_df_melt, dt)
 else:
     pass
